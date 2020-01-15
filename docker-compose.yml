@@ -5,7 +5,7 @@ services:
         build:
             context: ./postgres
         image: "localhost/devops-demo-postgres:0.0.1"
-        restart: "always"
+        restart: always
         deploy:
             resources:
                 limits:
@@ -20,6 +20,23 @@ services:
         networks:
             - devops-demo-net
 
+    devops-demo-nginx:
+        container_name: devops-demo-nginx
+        build:
+            context: ./nginx
+        image: "localhost/devops-demo-nginx:0.0.1"
+        restart: always
+        deploy:
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: "100M"
+        #depends_on:
+         #   - sonarqube
+        ports:
+            - "443:443"
+        networks:
+            - devops-demo-net
 networks:
     devops-demo-net:
         driver: bridge
