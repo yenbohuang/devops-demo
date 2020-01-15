@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+    devops-demo-postgres:
+        container_name: devops-demo-postgres
+        build:
+            context: ./postgres
+        image: "localhost/devops-demo-postgres:0.0.1"
+        restart: "always"
+        deploy:
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: "500M"
+        volumes:
+            - postgres-storage:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_PASSWORD=devops
+        networks:
+            - devops-demo-net
+
+networks:
+    devops-demo-net:
+        driver: bridge
+
+volumes:
+    postgres-storage:
