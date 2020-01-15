@@ -12,11 +12,36 @@ services:
                     cpus: "1"
                     memory: "500M"
         volumes:
-            - postgres-storage:/var/lib/postgresql/data
+            - devops-demo-postgres-storage:/var/lib/postgresql/data
         ports:
             - "5432:5432"
         environment:
             - POSTGRES_PASSWORD=devops
+        networks:
+            - devops-demo-net
+
+    devops-demo-sonarqube:
+        container_name: devops-demo-sonarqube
+        build:
+            context: ./sonarqube
+        image: "localhost/devops-demo-sonarqube:0.0.1"
+        restart: always
+        deploy:
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: "1500M"
+        depends_on:
+            - devops-demo-postgres
+        environment:
+            - sonar.jdbc.username=sonarqube
+            - sonar.jdbc.password=devops
+            - sonar.jdbc.url=jdbc:postgresql://devops-demo-postgres:5432/sonarqube
+        volumes:
+            - devops-demo-sonarqube_conf:/opt/sonarqube/conf
+            - devops-demo-sonarqube_extensions:/opt/sonarqube/extensions
+            - devops-demo-sonarqube_logs:/opt/sonarqube/logs
+            - devops-demo-sonarqube_data:/opt/sonarqube/data
         networks:
             - devops-demo-net
 
@@ -31,8 +56,8 @@ services:
                 limits:
                     cpus: "1"
                     memory: "100M"
-        #depends_on:
-         #   - sonarqube
+        depends_on:
+            - devops-demo-sonarqube
         ports:
             - "443:443"
         networks:
@@ -42,4 +67,8 @@ networks:
         driver: bridge
 
 volumes:
-    postgres-storage:
+    devops-demo-postgres-storage:
+    devops-demo-sonarqube_conf:
+    devops-demo-sonarqube_extensions:
+    devops-demo-sonarqube_logs:
+    devops-demo-sonarqube_data:
