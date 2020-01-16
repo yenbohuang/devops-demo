@@ -1,23 +1,7 @@
 # devops-demo
 
-* start
-```
-docker-compose --compatibility up --build -d
-```
-
-* stop
-```
-docker-compose --compatibility down
-```
-
-* check environment
-```
-docker ps -a
-docker volume ls
-docker network ls
-```
-
-* login container
-```
-docker exec -it <container name> /bin/sh
-```
+* Run `./starh.sh` and start containers.
+* Open browser and use the following services
+  * SonarQube: <https://localhost/sonarqube/>
+  * Keycloak: <https://localhost/auth/>
+* Run `./clean.sh` and clean up containers/volumes.

@@ -11,12 +11,39 @@ services:
                 limits:
                     cpus: "1"
                     memory: "500M"
+        environment:
+            - POSTGRES_PASSWORD=devops
         volumes:
             - devops-demo-postgres-storage:/var/lib/postgresql/data
         ports:
             - "5432:5432"
+        networks:
+            - devops-demo-net
+
+    devops-demo-keycloak:
+        container_name: devops-demo-keycloak
+        build:
+            context: ./keycloak
+        image: "localhost/devops-demo-keycloak:0.0.1"
+        restart: always
+        deploy:
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: "500M"
+        depends_on:
+            - devops-demo-postgres
         environment:
-            - POSTGRES_PASSWORD=devops
+            - KEYCLOAK_USER=keycloak
+            - KEYCLOAK_PASSWORD=devops
+            - DB_VENDOR=postgres
+            - DB_ADDR=devops-demo-postgres
+            - DB_PORT=5432
+            - DB_DATABASE=keycloak
+            - DB_USER=keycloak
+            - DB_PASSWORD=devops
+            - PROXY_ADDRESS_FORWARDING=true
+            - KEYCLOAK_FRONTEND_URL=https://localhost/auth/
         networks:
             - devops-demo-net
 
@@ -56,8 +83,6 @@ services:
                 limits:
                     cpus: "1"
                     memory: "100M"
-        depends_on:
-            - devops-demo-sonarqube
         ports:
             - "443:443"
         networks:
