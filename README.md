@@ -5,3 +5,9 @@
   * SonarQube: <https://localhost/sonarqube/>
   * Keycloak: <https://localhost/auth/>
 * Run `./clean.sh` and clean up containers/volumes.
+
+# Enable SAML on SonarQube
+
+* Create realm on Keycloak.
+* Create user.
+* Follow steps in this link: <https://docs.sonarqube.org/latest/instance-administration/delegated-auth/#header-5>
