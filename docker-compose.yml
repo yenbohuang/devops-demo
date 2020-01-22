@@ -19,6 +19,29 @@ services:
             - "5432:5432"
         networks:
             - devops-demo-net
+    
+    devops-demo-cadvisor:
+        container_name: devops-demo-cadvisor
+        build:
+            context: ./cadvisor
+        image: "localhost/devops-demo-cadvisor:0.0.1"
+        restart: always
+        deploy:
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: "150M"
+        volumes:
+            - /:/rootfs:ro
+            - /var/run:/var/run:ro
+            - /sys:/sys:ro
+            - /var/lib/docker/:/var/lib/docker:ro
+            - /dev/disk/:/dev/disk:ro
+        ports:
+            - "8080:8080"
+        command: --url_base_prefix=/cadvisor
+        networks:
+            - devops-demo-net
 
     devops-demo-keycloak:
         container_name: devops-demo-keycloak

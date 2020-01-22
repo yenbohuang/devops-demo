@@ -4,6 +4,7 @@
 * Open browser and use the following services
   * SonarQube: <https://localhost/sonarqube/>
   * Keycloak: <https://localhost/auth/>
+  * cAdvisor: <https://localhost/cadvisor/>
 * Run `./clean.sh` and clean up containers/volumes.
 
 # Enable SAML on SonarQube
