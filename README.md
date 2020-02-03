@@ -5,6 +5,7 @@
   * SonarQube: <https://localhost/sonarqube/>
   * Keycloak: <https://localhost/auth/>
   * cAdvisor: <https://localhost/cadvisor/>
+  * Prometheus: <https://localhost/prometheus/>
 * Run `./clean.sh` and clean up containers/volumes.
 
 # Enable SAML on SonarQube

@@ -25,21 +25,36 @@ services:
         build:
             context: ./cadvisor
         image: "localhost/devops-demo-cadvisor:0.0.1"
-        restart: always
         deploy:
             resources:
                 limits:
                     cpus: "1"
-                    memory: "150M"
+                    memory: "500M"
         volumes:
             - /:/rootfs:ro
             - /var/run:/var/run:ro
             - /sys:/sys:ro
             - /var/lib/docker/:/var/lib/docker:ro
             - /dev/disk/:/dev/disk:ro
-        ports:
-            - "8080:8080"
         command: --url_base_prefix=/cadvisor
+        networks:
+            - devops-demo-net
+
+    devops-demo-prometheus:
+        container_name: devops-demo-prometheus
+        build:
+            context: ./prometheus
+        image: "localhost/devops-demo-prometheus:0.0.1"
+        deploy:
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: "500M"
+        # do not add "--web.route-prefix"
+        # https://github.com/prometheus/prometh2433185eus/issues/4925#issuecomment-44
+        command: --config.file=/etc/devops-demo.yaml --web.external-url=https://localhost/prometheus
+        volumes:
+            - devops-demo-prometheus-storage:/prometheus
         networks:
             - devops-demo-net
 
@@ -53,7 +68,7 @@ services:
             resources:
                 limits:
                     cpus: "1"
-                    memory: "500M"
+                    memory: "750M"
         depends_on:
             - devops-demo-postgres
         environment:
@@ -75,7 +90,6 @@ services:
         build:
             context: ./sonarqube
         image: "localhost/devops-demo-sonarqube:0.0.1"
-        restart: always
         deploy:
             resources:
                 limits:
@@ -120,3 +134,4 @@ volumes:
     devops-demo-sonarqube_extensions:
     devops-demo-sonarqube_logs:
     devops-demo-sonarqube_data:
+    devops-demo-prometheus-storage:

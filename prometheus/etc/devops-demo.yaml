@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 5s
+  external_labels:
+    monitor: 'stats-monitor'
+
+scrape_configs:
+  - job_name: 'DockerStats'
+    static_configs:
+    # We can only use docker0 IP address; localhost will not work here.
+    - targets: ['172.17.0.1:9323']
