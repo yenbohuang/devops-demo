@@ -25,6 +25,7 @@ services:
         build:
             context: ./cadvisor
         image: "localhost/devops-demo-cadvisor:0.0.1"
+        restart: always
         deploy:
             resources:
                 limits:
@@ -45,6 +46,7 @@ services:
         build:
             context: ./prometheus
         image: "localhost/devops-demo-prometheus:0.0.1"
+        restart: always
         deploy:
             resources:
                 limits:
@@ -68,7 +70,7 @@ services:
             resources:
                 limits:
                     cpus: "1"
-                    memory: "750M"
+                    memory: "500M"
         depends_on:
             - devops-demo-postgres
         environment:
@@ -90,11 +92,12 @@ services:
         build:
             context: ./sonarqube
         image: "localhost/devops-demo-sonarqube:0.0.1"
+        restart: always
         deploy:
             resources:
                 limits:
                     cpus: "1"
-                    memory: "1500M"
+                    memory: "1000M"
         depends_on:
             - devops-demo-postgres
         environment:
